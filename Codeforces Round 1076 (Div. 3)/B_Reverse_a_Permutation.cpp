@@ -4,48 +4,48 @@
 
 using namespace std;
 
-int main()
+int main() 
 {
     int t;
     cin >> t;
-    while (t--)
+
+    while (t--) 
     {
         int n;
         cin >> n;
-        vector<int> arr(n); 
-        for(int i = 0; i < n; i++)
+
+        vector<int> arr(n);
+        for (int i = 0; i < n; i++) 
         {
-            cin >> arr[i]; 
+            cin >> arr[i];
         }
 
-        for(int i = 0; i < n; i++)
+        vector<int> suffixMaxPos(n);
+        suffixMaxPos[n - 1] = n - 1;
+
+        for (int i = n - 2; i >= 0; i--) 
         {
-            int mx = arr[i]; 
-            int pos = i; 
+            if (arr[i] > arr[suffixMaxPos[i + 1]])
+                suffixMaxPos[i] = i;
+            else
+                suffixMaxPos[i] = suffixMaxPos[i + 1];
+        }
 
-            for(int j = i + 1; j < n; j++)
+        for (int i = 0; i < n; i++)
+        {
+            if (arr[suffixMaxPos[i]] > arr[i]) 
             {
-                if(arr[j] > mx)
-                {
-                    mx = arr[j]; 
-                    pos = j; 
-                }
-            }
-
-            if(mx > arr[i])
-            {
-                reverse(arr.begin() + i, arr.begin() + pos + 1);
+                reverse(arr.begin() + i, arr.begin() + suffixMaxPos[i] + 1);
                 break;
             }
         }
 
-        for(auto c : arr)
+        for (int x : arr) 
         {
-            cout << c << " "; 
+            cout << x << " ";
         }
-
-        cout << endl; 
+        cout << endl;
     }
-    
+
     return 0;
 }
